@@ -1,2 +1,1 @@
-alert("app.js 실행");
-///
+const socket = io();

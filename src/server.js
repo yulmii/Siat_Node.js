@@ -1,4 +1,6 @@
 import express from "express";
+import http from "http";
+import SocketIO from "socket.io";
 
 const app = express();
 app.set("port", 3000);
@@ -14,8 +16,16 @@ app.get("/", (req, res)=>res.render("home"))
 //         res.end(html);
 //     })
 // });
-app.get("/*", (req, res)=> res.redirect("/"))
+app.get("/*", (req, res)=> res.redirect("/"));
 
-app.listen(app.get("port"), ()=> {
+
+const server = http.createServer(app);
+server.listen(app.get("port"), ()=> {
     console.log(`listening on http://localhost:${app.get("port")}`);
+});
+
+const wsServer = SocketIO(server);
+
+wsServer.on("connection", (socket)=>{
+    console.log("클라이언트 연결 됨 >> ", socket);
 });
