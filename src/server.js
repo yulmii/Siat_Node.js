@@ -27,5 +27,14 @@ server.listen(app.get("port"), ()=> {
 const wsServer = SocketIO(server);
 
 wsServer.on("connection", (socket)=>{
-    console.log("클라이언트 연결 됨 >> ", socket);
+    console.log("클라이언트 연결 됨 >> ");
+
+    socket.on('enter_room', (msg, a, b, callback)=>{
+        console.log("msg ----> ", msg);
+        socket.emit('echo', "셤은 담주에 본다");
+        console.log(a, b, callback);
+        callback("이것은 서버에서 보내 준 메세지입니다.");
+    });
+
+    // 채팅 룸 만들기
 });

@@ -9,7 +9,11 @@ html(lang="en")
         header 
             h1 Zoom
         main    
-            h2 Welcome to Zoom
-
+            div#welcome
+                fieldset
+                    legend Room name
+                    form
+                        input(placeholder="room name", require, type="text")
+                        button Enter Room
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")
