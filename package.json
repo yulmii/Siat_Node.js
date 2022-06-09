@@ -2,9 +2,10 @@
   "name": "socket_ex01",
   "version": "1.0.0",
   "description": "Zoom clone coding using NodeJS, WebRTC",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev" : "nodemon"
   },
   "keywords": [],
   "author": "",
