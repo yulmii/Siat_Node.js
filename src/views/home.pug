@@ -19,7 +19,10 @@ html(lang="en")
                 ul
                 fieldset
                     legend Message
-                    form
+                    form#name
+                        input(placeholder="nickname", require, type="text")
+                        button Save
+                    form#msg
                         input(placeholder="message", require, type="text")
                         button Send
         script(src="/socket.io/socket.io.js")

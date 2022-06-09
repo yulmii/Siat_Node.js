@@ -28,7 +28,8 @@ const wsServer = SocketIO(server);
 
 wsServer.on("connection", (socket)=>{
     console.log("클라이언트 연결 됨 >> ");
-
+    socket.roomName = "";
+    socket.nickName = "Anon";
     // socket.on('enter_room', (msg, a, b, callback)=>{
     //     console.log("msg ----> ", msg);
     //     socket.emit('echo', "셤은 담주에 본다");
@@ -36,8 +37,14 @@ wsServer.on("connection", (socket)=>{
     //     callback("이것은 서버에서 보내 준 메세지입니다.");
     // });
 
+    // 닉네임 저장
+    socket.on('nickname', (nickName)=> {
+        socket.nickName = nickName;
+    });
+
     // 채팅 룸 만들기
     socket.on('enter_room', (roomName, callback)=>{
+        socket.roomName = roomName;
         callback(roomName);
         // console.log(roomName);
         // console.log(socket.id);
@@ -45,7 +52,7 @@ wsServer.on("connection", (socket)=>{
         socket.join(roomName);
         // console.log(socket.rooms);
         // message sender를 제외한 같은 room의 소켓에 일제히 보낸다.
-        socket.to(roomName).emit('welcome');
+        socket.to(roomName).emit('welcome', socket.nickName);
     });
 
     // 접속이 끊어지면 발생 하는 이벤트
@@ -53,7 +60,12 @@ wsServer.on("connection", (socket)=>{
     socket.on('disconnecting', ()=>{
         console.log("disconnecting ...");
         socket.rooms.forEach( (room) => {
-           socket.to(room).emit("bye")
+           socket.to(room).emit("bye", socket.nickName);
         });
+    });
+
+    socket.on('new_message', (msg, callback)=>{
+        callback(msg);
+        socket.to(socket.roomName).emit('message', socket.nickName +":" +msg);
     });
 });
