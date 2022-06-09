@@ -15,5 +15,12 @@ html(lang="en")
                     form
                         input(placeholder="room name", require, type="text")
                         button Enter Room
+            div#room
+                ul
+                fieldset
+                    legend Message
+                    form
+                        input(placeholder="message", require, type="text")
+                        button Send
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")

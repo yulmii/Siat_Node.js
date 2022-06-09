@@ -38,10 +38,22 @@ wsServer.on("connection", (socket)=>{
 
     // 채팅 룸 만들기
     socket.on('enter_room', (roomName, callback)=>{
-        console.log(roomName);
-        console.log(socket.id);
-        console.log(socket.rooms);
+        callback(roomName);
+        // console.log(roomName);
+        // console.log(socket.id);
+        // console.log(socket.rooms);
         socket.join(roomName);
-        console.log(socket.rooms);
+        // console.log(socket.rooms);
+        // message sender를 제외한 같은 room의 소켓에 일제히 보낸다.
+        socket.to(roomName).emit('welcome');
+    });
+
+    // 접속이 끊어지면 발생 하는 이벤트
+    // disconnect, disconnecting
+    socket.on('disconnecting', ()=>{
+        console.log("disconnecting ...");
+        socket.rooms.forEach( (room) => {
+           socket.to(room).emit("bye")
+        });
     });
 });
